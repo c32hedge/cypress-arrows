@@ -10,10 +10,10 @@ const codes = {
 
 function keydownCommand ($el, key) {
   const message = `sending the "${key}" keydown event`
-  const log = Cypress.Log.command({
+  const log = Cypress.log({
     name: `keydown: ${key}`,
     message: message,
-    onConsole: function () {
+    consoleProps: function () {
       return {
         Subject: $el
       }
@@ -61,8 +61,8 @@ function keydownCommand ($el, key) {
   return $el
 }
 
-Cypress.addChildCommand('keydown', keydownCommand)
-Cypress.addChildCommand('left', $el => keydownCommand($el, 'ArrowLeft'))
-Cypress.addChildCommand('right', $el => keydownCommand($el, 'ArrowRight'))
-Cypress.addChildCommand('up', $el => keydownCommand($el, 'ArrowUp'))
-Cypress.addChildCommand('down', $el => keydownCommand($el, 'ArrowDown'))
+Cypress.Commands.add('keydown', { prevSubject: "dom" }, keydownCommand)
+Cypress.Commands.add('left', { prevSubject: "dom" }, $el => keydownCommand($el, 'ArrowLeft'))
+Cypress.Commands.add('right', { prevSubject: "dom" }, $el => keydownCommand($el, 'ArrowRight'))
+Cypress.Commands.add('up', { prevSubject: "dom" }, $el => keydownCommand($el, 'ArrowUp'))
+Cypress.Commands.add('down', { prevSubject: "dom" }, $el => keydownCommand($el, 'ArrowDown'))
